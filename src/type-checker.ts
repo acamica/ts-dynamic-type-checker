@@ -1,9 +1,11 @@
 type IType = 'string' | 'boolean' | 'object' | 'number' | 'undefined';
-export interface IMapOfContracts {
-    [propName: string]: IContract<any>;
-}
-export type IContract<T> = (x: T) => T;
 type IThrowFn = (x: string) => never;
+
+export type IObjOf = <T> (contract: IMapOfContracts<T>) => (target: T) => T;
+export type IContract <T> = (x: T) => T;
+export type IMapOfContracts<T> = {
+    [P in keyof T]: IContract<T[P]> | IMapOfContracts<T[P]> ;
+};
 
 const contract = <T>(type: IType): IContract<T> => x => {
     if (typeof x !== type) {
@@ -24,9 +26,7 @@ const checkAllIncluded = (arrA: string[], arrB: string[], throwFn: IThrowFn) =>
         return anElement;
     });
 
-export const objOf = <T extends object = any>(
-    contractsMap: IMapOfContracts
-): IContract<T> => {
+export const objOf: IObjOf = (contractsMap) => {
     contractsMap = obj(contractsMap);
     const contractKeys = Object.keys(contractsMap);
 
@@ -37,23 +37,28 @@ export const objOf = <T extends object = any>(
         throw new TypeError(`Missing property "${propName}"`);
     };
 
-    return (target: T) => {
+    return (target) => {
         const targetKeys = Object.keys(target);
         checkAllIncluded(targetKeys, contractKeys, throwExtraProp);
         checkAllIncluded(contractKeys, targetKeys, throwMissingProp);
 
-        contractKeys.forEach(aContractKey => {
+        for (const aContractKey in contractsMap) {
             const aContract = contractsMap[aContractKey];
-            const prop = target[aContractKey as keyof T];
+            const prop = target[aContractKey];
             try {
-                aContract(prop);
+                if (typeof aContract === 'function') {
+                    aContract(prop);                    
+                }
+                else {
+                    objOf(aContract)(prop);
+                }
             } catch (e) {
                 if (!(e instanceof TypeError)) {
                     throw e;
                 }
                 throw new TypeError(`[${aContractKey}]: ${e.message}`);
             }
-        });
+        }
 
         return target;
     };
