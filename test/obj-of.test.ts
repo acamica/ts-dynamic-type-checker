@@ -1,4 +1,4 @@
-import { objOf, str, num } from '../src/type-checker';
+import { objOf, str, num, bool } from '../src/type-checker';
 
 /**
  * objOf typings
@@ -97,5 +97,116 @@ describe('`objOf` contract', () => {
                 bar: 3
             } as any)
         ).toThrowError(SyntaxError);
+    });
+
+    describe('Nested `objOf` contracts', () => {
+        const objContract = objOf({
+            nested: {
+                foo: str,
+                bar: num
+            },
+            baz: bool
+        });
+    
+        it('`objOf(ContractMap)(x)` returns `x` when it is `x` corresponds with ContractMap', () => {
+            const obj = {
+                nested: {
+                    foo: 'baz',
+                    bar: 5
+                },
+                baz: true
+            };
+            expect(objContract(obj)).toEqual(obj);
+        });
+    
+        it('`objOf(ContractMap)(x)` throws TypeError if `x.nested` is not an object', () => {
+            expect(() => objContract({
+                nested: 'd',
+                baz: true
+            } as any)).toThrowError(TypeError);
+        });
+    
+        it('`objOf(ContractMap)(x)` throws TypeError if `x.nested` is missing a property', () => {
+            expect(() =>
+                objContract({
+                nested: {
+                    foo: 'baz'
+                },
+                baz: false
+            } as any)
+            ).toThrowError(TypeError);
+        });
+    
+        it('`objOf(ContractMap)(x)` throws TypeError if `x.nested` has extra properties', () => {
+            expect(() =>
+                objContract({
+                    nested: {
+                        foo: 'baz',
+                        bar: 3,
+                        baz: undefined
+                    },
+                    baz: true
+                } as any)
+            ).toThrowError(TypeError);
+        });
+    
+        it("`objOf(ContractMap)(x)` throws TypeError if any of `x.nested`'s properties does not respect its subcontract", () => {
+            expect(() =>
+                objContract({
+                    nested: {
+                        foo: 'baz',
+                        bar: 'this should not be a string'
+                    },
+                    baz: true
+                } as any)
+            ).toThrowError(TypeError);
+        });
+    
+        it('`objOf(ContractMap)(x)` throws error with useful information when failing because of x.nested\'s subcontract', () => {
+            // Contains prop name (nesting is reflected)
+            expect(() =>
+                objContract({
+                    nested: {
+                        foo: 'baz',
+                        bar: 'hakuna matata'    
+                    },
+                    baz: true
+                } as any)
+            ).toThrowError('[nested]: [bar]:');
+    
+            // The following `expect`s check the `num` contract errors
+            // Contains prop value
+            expect(() =>
+                objContract({
+                    nested: {
+                        foo: 'baz',
+                        bar: 'hakuna matata'    
+                    },
+                    baz: true
+                } as any)
+            ).toThrowError('hakuna matata');
+    
+            // Contains actual type
+            expect(() =>
+                objContract({
+                    nested: {
+                        foo: 'baz',
+                        bar: 'hakuna matata'    
+                    },
+                    baz: true
+                } as any)
+            ).toThrowError('string');
+    
+            // Contains expected type
+            expect(() =>
+                objContract({
+                    nested: {
+                        foo: 'baz',
+                        bar: 'hakuna matata'    
+                    },
+                    baz: true
+                } as any)
+            ).toThrowError('number');
+        });
     });
 });
