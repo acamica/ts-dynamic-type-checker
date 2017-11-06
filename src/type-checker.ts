@@ -1,11 +1,7 @@
 type IType = 'string' | 'boolean' | 'object' | 'number' | 'undefined';
 type IThrowFn = (x: string) => never;
 
-export type IObjOf = <T> (contract: IMapOfContracts<T>) => (target: T) => T;
 export type IContract <T> = (x: T) => T;
-export type IMapOfContracts<T> = {
-    [P in keyof T]: IContract<T[P]> | IMapOfContracts<T[P]> ;
-};
 
 const contract = <T>(type: IType): IContract<T> => x => {
     if (typeof x !== type) {
@@ -26,6 +22,11 @@ const checkAllIncluded = (arrA: string[], arrB: string[], throwFn: IThrowFn) =>
         return anElement;
     });
 
+export type IMapOfContracts<T> = {
+    [P in keyof T]: IContract<T[P]> | IMapOfContracts<T[P]> ;
+};
+    
+export type IObjOf = <T> (contract: IMapOfContracts<T>) => (target: T) => T;
 export const objOf: IObjOf = (contractsMap) => {
     contractsMap = obj(contractsMap);
     const contractKeys = Object.keys(contractsMap);
