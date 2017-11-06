@@ -17,7 +17,7 @@ TODO
 
 Made from the [`typescript-library-starter`](https://github.com/alexjoverm/typescript-library-starter).
 
-Made with :heart: by `dggluz` and all these wonderful contributors ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
+Thanks goes to these wonderful people:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 | [<img src="https://avatars1.githubusercontent.com/u/1573956?v=4" width="100px;"/><br /><sub><b>Gonzalo Gluzman</b></sub>](https://github.com/dggluz)<br />[💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Code") [📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Documentation") |
