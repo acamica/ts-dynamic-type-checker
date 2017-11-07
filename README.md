@@ -179,14 +179,14 @@ It takes a `contract` "_`C`_" as a parameter and returns another `contract` that
 
 ```typescript
 const arrOfNumbersContract = arrOf(num);
-const numbers = arrOf([1, 2, 3]);
+const numbers = arrOfNumbersContract([1, 2, 3]);
 ```
 
 #### **`objOf`**:
 
 `<T> (IMapOfContracts<T>) -> IContract<T>`
 
-Takes an _object_ that describes the _shape_ of the `objects` you want to validate and returns a `contract` with that validation. The `IMapOfContracts` object has `contracts` or `IMapOfContracts` as _values_.
+Takes an _object_ that describes the _shape_ of the `objects` you want to validate and returns a `contract` with that validation. That _object_ has `contracts` or other similar _objects_ as _values_.
 
 ```typescript
 const petContract = objOf(
