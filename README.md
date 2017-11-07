@@ -160,7 +160,21 @@ const fooBar = fooBarContract({
 
 ### `contract` _builders_
 
-#### **`oneOf`**
+#### `optional`
+
+`<T> (IContract<T>) -> IContract<T | undefined>`
+
+Takes a `contract` and returns a new one that matches like the first one but also matches `undefined` values.
+
+```typescript
+const optionalNumber = optional(num);
+// All the following are valid:
+optionalNumber(9);
+optionalNumber(undefined);
+optionalNumber();
+```
+
+#### `oneOf`
 
 `(...string[]) -> IContract<string>`
 
@@ -171,7 +185,7 @@ const osContract = oneOf('Linux', 'Mac OS', 'Windows', 'Other');
 const os = osContract('Linux');
 ```
 
-#### **`arrOf`**
+#### `arrOf`
 
 `<T> (IContract<T>) -> IContract<T[]>`
 
@@ -182,7 +196,7 @@ const arrOfNumbersContract = arrOf(num);
 const numbers = arrOfNumbersContract([1, 2, 3]);
 ```
 
-#### **`objOf`**
+#### `objOf`
 
 `<T> (IMapOfContracts<T>) -> IContract<T>`
 
@@ -202,6 +216,18 @@ const oddy = petContract({
     age: 8,
     gender: 'female'
 });
+```
+
+#### `strictObjOf`
+
+`<T> (IMapOfContracts<T>) -> IContract<T>`
+
+It is the same than `objOf` function, but also checks that the _target_ doesn't have extra _properties_.
+
+```typescript
+// It only matches empty objects
+const emptyObjectContract = strictObjOf({});
+const oddy = emptyObjectContract({});
 ```
 
 ## Credits
