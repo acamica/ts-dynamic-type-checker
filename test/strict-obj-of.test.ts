@@ -1,14 +1,11 @@
 import { objOfTests } from './obj-of.utils';
-import { objOf } from '../src/type-checker';
-import { str } from '../src/str';
-import { num } from '../src/num';
+import { strictObjOf, num, str } from '../src/type-checker';
 
-describe('`objOf` contract builder', () => {
-    objOfTests(objOf, 'objOf');
-
+describe('`strictObjOf` contract builder', () => {
+    objOfTests(strictObjOf, 'strictObjOf');
 
     it('`strictObjOf(ContractMap)(x)` throws TypeError if x has extra properties', () => {
-        const objContract = objOf({
+        const objContract = strictObjOf({
             foo: str,
             bar: num
         });
@@ -18,8 +15,7 @@ describe('`objOf` contract builder', () => {
                 foo: 'baz',
                 bar: 3,
                 baz: undefined
-            })
+            } as any)
         ).toThrowError(TypeError);
     });
-
 });

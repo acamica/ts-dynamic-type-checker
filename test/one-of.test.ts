@@ -1,8 +1,5 @@
 import { oneOf } from '../src/type-checker';
 
-/**
- * oneOf typings
- */
 describe('`oneOf` contract', () => {
     it('`oneOf(a, b, c)(x)` returns `x` when it is included in [a, b, c]', () => {
         const oneOfAbc = oneOf('a', 'b', 'c');

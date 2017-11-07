@@ -101,12 +101,12 @@ const personValidator = objOf({
     name: str,
     age: num,
     profession: oneOf('student', 'employed', 'unemployed', 'retired'),
-    address: {
+    address: objOf({
         street: str,
         city: str,
         state: str,
         country: str
-    },
+    }),
     driving_license: bool
 });
 
@@ -118,7 +118,7 @@ xhr('/URI/to/people')
     .then(people => /* The `people` variable is guaranteed to have the shape you have defined... */);
 ```
 
-Notice that the `objOf` function takes an object that describes the _shape_ of the expected objects as a parameter. That object's properties are **contracts** or other objects (_nesting_).
+Notice that the `objOf` function takes an object that describes the _shape_ of the expected objects as a parameter. That object's properties are **contracts**.
 
 ### Type inference
 
@@ -186,7 +186,7 @@ const numbers = arrOfNumbersContract([1, 2, 3]);
 
 `<T> (IMapOfContracts<T>) -> IContract<T>`
 
-Takes an _object_ that describes the _shape_ of the `objects` you want to validate and returns a `contract` with that validation. That _object_ has `contracts` or other similar _objects_ as _values_.
+Takes an _object_ that describes the _shape_ of the `objects` you want to validate and returns a `contract` with that validation. That _object_'s values must be `contracts`.
 
 ```typescript
 const petContract = objOf(
