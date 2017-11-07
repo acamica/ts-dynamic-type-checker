@@ -1,6 +1,6 @@
 {
   "name": "ts-dynamic-type-checker",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "TypeScript library that permorms dynamic type checking. It's useful for cases where you can't use TypeScript's static type checking (like reading a JSON object from a file).",
   "keywords": ["TypeScript", "Type checking", "Dynamic type checking"],
   "main": "dist/type-checker.umd.js",
