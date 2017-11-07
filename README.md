@@ -162,8 +162,7 @@ const fooBar = fooBarContract({
 
 #### **`oneOf`**:
 
-- Type: `(...string[]) -> IContract<string>`
-- Type of contract
+`(...string[]) -> IContract<string>`
 
 It is used to validate _`unum` values_. You specify the valid values and it returns a `contract` that will check against them. Example:
 
@@ -174,7 +173,7 @@ const os = osContract('Linux');
 
 #### **`arrOf`**:
 
-##### `<T> (IContract<T>) -> IContract<T[]>`
+`<T> (IContract<T>) -> IContract<T[]>`
 
 It takes a `contract` "_`C`_" as a parameter and returns another `contract` that expects an `array` of _elements_ that match _`C`_.
 
@@ -185,7 +184,7 @@ const numbers = arrOf([1, 2, 3]);
 
 #### **`objOf`**:
 
-##### `<T> (IMapOfContracts<T>) -> IContract<T>`
+`<T> (IMapOfContracts<T>) -> IContract<T>`
 
 Takes an _object_ that describes the _shape_ of the `objects` you want to validate and returns a `contract` with that validation. The `IMapOfContracts` object has `contracts` or `IMapOfContracts` as _values_.
 
