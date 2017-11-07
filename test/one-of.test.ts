@@ -1,6 +1,6 @@
 import { oneOf } from '../src/type-checker';
 
-describe('`oneOf` contract', () => {
+describe('`oneOf` contract builder', () => {
     it('`oneOf(a, b, c)(x)` returns `x` when it is included in [a, b, c]', () => {
         const oneOfAbc = oneOf('a', 'b', 'c');
         expect(oneOfAbc('a')).toBe('a');

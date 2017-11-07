@@ -1,6 +1,6 @@
 import { optional, str } from '../src/type-checker';
 
-describe('`optional` contract', () => {
+describe('`optional` contract builder', () => {
     it('`optional(contract)(x)` returns `x` when it is a undefined', () => {
         expect(optional(str)(undefined)).toBe(undefined);
     });

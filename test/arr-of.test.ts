@@ -3,7 +3,7 @@ import { arrOf, str, num } from '../src/type-checker';
 /**
  * arrOf typings
  */
-describe('`arrOf` contract', () => {
+describe('`arrOf` contract builder', () => {
     it('`arrOf(<string>)(x)` returns `x` when it is `x` an array of strings', () => {
         const arrOfStringsContract = arrOf(str);
         const strArr = ['a', 'b', 'c'];
