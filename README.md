@@ -67,7 +67,7 @@ const readLine = createInterface({
 
 const aFruit: IFruit = 'cheese'; // <-- static error. It will be warned by TypeScript itself.
 
-readLine.question('Which is your favourite fruit? ', (someFruit) => {
+readLine.question('Which is your favourite fruit?', (someFruit) => {
     const favouriteFruit: IFruit = isFruit(someFruit); // <- Will throw a TypeError if `someFruit` has any other value than 'apple', 'banana', 'strawberry' or 'orange'. It's a potential dynamic error and TypeScript could not detect it.
 });
 ```
@@ -82,7 +82,7 @@ import { arrOf, num, oneOf } from 'ts-dynamic-type-checker';
 const onlyNumbers = arrOf(num);
 
 onlyNumbers([1, 2, 3]); // <- Returns [1, 2, 3]
-onlyNumbers(['Hello', 'world', 99]); // <- Throws a TypeError
+onlyNumbers(['Hello', 'world', 99] as any); // <- Throws a TypeError
 
 const onlyHobbits = arrOf(oneOf('Frodo', 'Bilbo', 'Merry', 'Pippin', 'Sam', 'Gollum'));
 
