@@ -3,8 +3,6 @@ import { memberOf } from './utils';
 
 export type ILiteral  = string | number | boolean;
 
-export function oneOf (): IContract<never>;
-
 export function oneOf <
 A extends ILiteral
 >(v1: A): IContract<A>;
