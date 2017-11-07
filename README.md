@@ -1,7 +1,36 @@
 # TS dynamic type checker
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 
-TypeScript library that permorms dynamic type checking. It's useful for cases where you can't use TypeScript's static type checking (like reading a JSON object from a file or receiving data from a request).
+**TypeScript library that permorms dynamic type checking.**
+
+TypeScript is great. It warns you of static type errors and hence earns you lots of time and headaches. But your program probably have entrypoints (network requests, file readings, etc.) that can not be trusted completely.
+
+For instance, supose you read some configuration from a JSON file:
+
+```typescript
+import { readFile } from 'fs';
+
+interface IAwsConfig {
+    // definitions...
+};
+
+readFile('./my-aws-config.json', { encoding: 'utf8' }, (err, awsConfigStr) => {
+    if (err) {
+        console.error(err);
+        return;
+    }
+    const awsConfig: IAwsConfig = JSON.parse(awsConfigStr);
+});
+```
+
+In this example, TypeScript can not prevent errors if the read JSON doesn't have an expected property. These are the cases, this library was created for.
+
+## Features
+
+- Inferes typings.
+- Very lightweight (under 4kb without minifying).
+- Expressive errors.
+- Works clientside and serverside.
 
 ## Installation
 
@@ -11,34 +40,41 @@ npm install --save ts-dynamic-type-checker
 
 ## Usage
 
-The basic concept behind the library is the one of "**_contract_**". A **_contract_** is like an _identity function_ but it throws an error if the parameter is not what is expected.
+The basic concept behind the library is the one of "**_contract_**". A **_contract_** is an _identity function_ but it throws a `TypeError` if the parameter doesn't have the expected type.
 
-For example, the `str` expects its parameter to be a `string` and will behave just like the _identity function_ if it is. But if it receives any other type, it will throw a `TypeError`:
+For example if you pass a `string` to the `str` **contract**, it will return the same value, for other _types_ it will throw a `TypeError`:
 
 ```typescript
 import { str } from 'ts-dynamic-type-checker';
 
 str('Hello world'); // <- Returns 'Hello world'
-str(8); // <- Throws a TypeError
+str(8 as any); // <- Throws a TypeError
 ```
 
-Of course, you can make some more complex checks:
+Check for specific values:
 
 ```typescript
-import { isFruit } from 'ts-dynamic-type-checker';
+import { oneOf } from 'ts-dynamic-type-checker';
+import { createInterface } from 'readline';
 
 const isFruit = oneOf('apple', 'banana', 'strawberry', 'orange');
+type IFruit = 'apple' | 'banana' | 'strawberry' | 'orange';
 
-// Some code where you get the variable `someFruit`...
-// ...
-// ...
+const readLine = createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
-someFruit = isFruit(someFruit); // <- Will throw a TypeError if `someFruit` has any other value than 'apple', 'banana', 'strawberry' or 'orange'
+const aFruit: IFruit = 'cheese'; // <-- static error. It will be warned by TypeScript itself.
+
+readLine.question('Which is your favourite fruit? ', (someFruit) => {
+    const favouriteFruit: IFruit = isFruit(someFruit); // <- Will throw a TypeError if `someFruit` has any other value than 'apple', 'banana', 'strawberry' or 'orange'. It's a potential dynamic error and TypeScript could not detect it.
+});
 ```
 
 It's important to notice that while `str` is a **contract** itself, `oneOf` is not. `oneOf` is a function that _returns_ a **contract**. You can think of it like a _contract builder_.
 
-There are some other functions that help you build contracts. For instance, there is `arrOf`:
+There are some other functions that help you build `contracts`. For instance, there is `arrOf`:
 
 ```typescript
 import { arrOf, num, oneOf } from 'ts-dynamic-type-checker';
@@ -109,32 +145,65 @@ const fooBar = fooBarContract({
 }); // <- TypeScript will infer type {foo: string; bar: number;}
 ```
 
-## Features
-
-- Inferes typings.
-- Very lightweight (under 4kb without minifying).
-- Expressive errors.
-
 ## API
 
-### Types
+### Built in `contract`s
 
-- **`IContract`**: `<T> (x: T) -> T`: the interface is the one of the _identity function_. It throws a `TypeError` if the parameter doesn't match the expected types.
-- **`IMapOfContracts`**: `<T> { P in keyof T]: IContract<T[P]> | IMapOfContracts<T[P]>; }`: It is an object that describes the _shape_ of the object you want to validate. It is used with the `objOf` function.
+| Function  | Type                              | Example                               | 
+| --------- | --------------------------------- | ------------------------------------- |
+| `bool`    | `IContract<boolean>`              | ```typescript bool(true); ```         |
+| `num`     | `IContract<number>`               | ```typescript num(89); ```            |
+| `str`     | `IContract<string>`               | ```typescript str('Hello world'); ``` |
+| `undef`   | `IContract<undefined>`            | ```typescript undef(undefined); ```   |
+| `arr`     | `<T> IContract<T[]>`              | ```typescript arr([1, 2, 3]); ```     |
+| `obj`     | `<T extends object> IContract<T>` | ```typescript bool({foo: 'foo'}); ``` |
 
-In the following functions specification, we will refer to functions of the form `<T> (x: T) ->` as `IContract<T>`. For instance, `IContract<boolean>` is equivalent to `(x: boolean) -> boolean`.
+### `contract` _builders_
 
-### Functions
+#### **`oneOf`**:
 
-- **`bool`**: `IContract<boolean>`: a `contract` that validates that the parameter is a `boolean`. It returns the parameter if it happens to be a `boolean` or throws a `TypeError` if not.
-- **`num`**: `IContract<number>`: a `contract` that validates that the parameter is a `number`. It returns the parameter if it happens to be a `number` or throws a `TypeError` if not.
-- **`str`**: `IContract<string>`: a `contract` that validates that the parameter is a `string`. It returns the parameter if it happens to be a `string` or throws a `TypeError` if not.
-- **`undef`**: `IContract<undefined>`: a `contract` that validates that the parameter is a `undefined`. It returns the parameter if it happens to be `undefined` or throws a `TypeError` if not.
-- **`arr`**: `<T> IContract<T[]>`: a `contract` that validates that the parameter is an `array` (checks with `Array.isArray` function). It returns the parameter if it happens to be an `array` or throws a `TypeError` if not.
-- **`obj`**: `<T extends object> IContract<T>`: a `contract` that validates that the parameter is an `object`. It returns the parameter if it happens to be an `object` or throws a `TypeError` if not.
-- **`oneOf`**: `(...string[]) -> IContract<string>`: it is used to validate _`unum` values_. You specify the valid values and it returns a `contract` that will check against them.
-- **`arrOf`**: `<T> (IContract<T>) -> IContract<T[]>`: It takes a `contract` "_`C`_" as a parameter and returns another `contract` that expects an `array` of _elements_ that match _`C`_.
-- **`objOf`**: `<T> (IMapOfContracts<T>) -> IContract<T>`: takes an _object_ that describes the _shape_ of the `objects` you want to validate and returns a `contract` with that validation. The `IMapOfContracts` object has `contracts` or `IMapOfContracts` as _values_.
+- Type: `(...string[]) -> IContract<string>`
+- Type of contract
+
+It is used to validate _`unum` values_. You specify the valid values and it returns a `contract` that will check against them. Example:
+
+```typescript
+const osContract = oneOf('Linux', 'Mac OS', 'Windows', 'Other');
+const os = osContract('Linux');
+```
+
+#### **`arrOf`**:
+
+##### `<T> (IContract<T>) -> IContract<T[]>`
+
+It takes a `contract` "_`C`_" as a parameter and returns another `contract` that expects an `array` of _elements_ that match _`C`_.
+
+```typescript
+const arrOfNumbersContract = arrOf(num);
+const numbers = arrOf([1, 2, 3]);
+```
+
+#### **`objOf`**:
+
+##### `<T> (IMapOfContracts<T>) -> IContract<T>`
+
+Takes an _object_ that describes the _shape_ of the `objects` you want to validate and returns a `contract` with that validation. The `IMapOfContracts` object has `contracts` or `IMapOfContracts` as _values_.
+
+```typescript
+const petContract = objOf(
+    name: str,
+    species: oneOf('dog', 'cat', 'golden fish', 'parrot', 'other'),
+    age: number,
+    gender: oneOf('male', 'female')
+);
+// <3
+const oddy = petContract({
+    name: 'Oddy',
+    species: 'dog',
+    age: 8,
+    gender: 'female'
+});
+```
 
 ## Credits
 
@@ -143,8 +212,8 @@ Made from the [`typescript-library-starter`](https://github.com/alexjoverm/types
 Thanks goes to these wonderful people:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-| [<img src="https://avatars1.githubusercontent.com/u/1573956?v=4" width="100px;"/><br /><sub><b>Gonzalo Gluzman</b></sub>](https://github.com/dggluz)<br />[💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Code") [📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Documentation") |
-| :---: |
+| [<img src="https://avatars1.githubusercontent.com/u/1573956?v=4" width="100px;"/><br /><sub><b>Gonzalo Gluzman</b></sub>](https://github.com/dggluz)<br />[💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Code") [📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/2634059?v=4" width="100px;"/><br /><sub><b>Hernan Rajchert</b></sub>](https://github.com/hrajchert)<br />[📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=hrajchert "Documentation") [💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=hrajchert "Code") |
+| :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
