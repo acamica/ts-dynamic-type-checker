@@ -176,14 +176,16 @@ optionalNumber();
 
 #### `oneOf`
 
-`(...string[]) -> IContract<string>`
+`(...(string | number | boolean)[]) -> IContract<union of valid values>`
 
-It is used to validate _`unum` values_. You specify the valid values and it returns a `contract` that will check against them. Example:
+It is used to validate _`unum`-like values_. You specify the valid values and it returns a `contract` that will check against them. Example:
 
 ```typescript
 const osContract = oneOf('Linux', 'Mac OS', 'Windows', 'Other');
-const os = osContract('Linux');
+const os = osContract('Linux'); // os's type is 'Linux' | 'Mac OS' | 'Windows' | 'Other'
 ```
+
+TypeScript will infere the `contract`'s return value as the union of the literal types passed (up to 10 parameters, then behaves like `<T extends string | number | boolean> IContract<T>`).
 
 #### `arrOf`
 
