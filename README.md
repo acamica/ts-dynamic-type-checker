@@ -149,18 +149,18 @@ const fooBar = fooBarContract({
 
 ### Built in `contract`s
 
-| Function  | Type                              | Example                               | 
-| --------- | --------------------------------- | ------------------------------------- |
-| `bool`    | `IContract<boolean>`              | ```typescript bool(true); ```         |
-| `num`     | `IContract<number>`               | ```typescript num(89); ```            |
-| `str`     | `IContract<string>`               | ```typescript str('Hello world'); ``` |
-| `undef`   | `IContract<undefined>`            | ```typescript undef(undefined); ```   |
-| `arr`     | `<T> IContract<T[]>`              | ```typescript arr([1, 2, 3]); ```     |
-| `obj`     | `<T extends object> IContract<T>` | ```typescript bool({foo: 'foo'}); ``` |
+| Function  | Type                              | Example                | 
+| --------- | --------------------------------- | ---------------------- |
+| `bool`    | `IContract<boolean>`              | `bool(true); `         |
+| `num`     | `IContract<number>`               | `num(89); `            |
+| `str`     | `IContract<string>`               | `str('Hello world'); ` |
+| `undef`   | `IContract<undefined>`            | `undef(undefined); `   |
+| `arr`     | `<T> IContract<T[]>`              | `arr([1, 2, 3]); `     |
+| `obj`     | `<T extends object> IContract<T>` | `bool({foo: 'foo'}); ` |
 
 ### `contract` _builders_
 
-#### **`oneOf`**:
+#### **`oneOf`**
 
 `(...string[]) -> IContract<string>`
 
@@ -171,7 +171,7 @@ const osContract = oneOf('Linux', 'Mac OS', 'Windows', 'Other');
 const os = osContract('Linux');
 ```
 
-#### **`arrOf`**:
+#### **`arrOf`**
 
 `<T> (IContract<T>) -> IContract<T[]>`
 
@@ -182,7 +182,7 @@ const arrOfNumbersContract = arrOf(num);
 const numbers = arrOfNumbersContract([1, 2, 3]);
 ```
 
-#### **`objOf`**:
+#### **`objOf`**
 
 `<T> (IMapOfContracts<T>) -> IContract<T>`
 
