@@ -147,7 +147,7 @@ const fooBar = fooBarContract({
 
 ## API
 
-### Built in `contract`s
+### Built-in `contract`s
 
 | Function  | Type                              | Example                | 
 | --------- | --------------------------------- | ---------------------- |
