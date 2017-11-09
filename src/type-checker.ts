@@ -9,3 +9,5 @@ export { oneOf } from './one-of';
 export { arrOf } from './arr-of';
 export { objOf } from './obj-of';
 export { strictObjOf } from './strict-obj-of';
+export { nullable } from './nullable';
+export { IContract } from './contract';

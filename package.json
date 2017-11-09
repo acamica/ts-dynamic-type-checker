@@ -2,7 +2,11 @@
   "name": "ts-dynamic-type-checker",
   "version": "0.0.4",
   "description": "TypeScript library that permorms dynamic type checking. It's useful for cases where you can't use TypeScript's static type checking (like reading a JSON object from a file).",
-  "keywords": ["TypeScript", "Type checking", "Dynamic type checking"],
+  "keywords": [
+    "TypeScript",
+    "Type checking",
+    "Dynamic type checking"
+  ],
   "main": "dist/type-checker.umd.js",
   "module": "dist/type-checker.es5.js",
   "typings": "dist/types/type-checker.d.ts",
@@ -19,6 +23,8 @@
     "node": ">=6.0.0"
   },
   "scripts": {
+    "contributors-add": "all-contributors add",
+    "contributors-generate": "all-contributors generate",
     "lint": "tslint -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
     "build": "tsc && rollup -c rollup.config.ts && rimraf compiled && typedoc --out dist/docs --target es6 --theme minimal src",
