@@ -1,5 +1,5 @@
 # TS dynamic type checker
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
 
 **TypeScript library that permorms dynamic type checking.**
 
@@ -174,6 +174,19 @@ optionalNumber(undefined);
 optionalNumber();
 ```
 
+#### `nullable`
+
+`<T> (IContract<T>) -> IContract<T | null>`
+
+Takes a `contract` and returns a new one that matches like the first one but also matches `null` values.
+
+```typescript
+const nullableNumber = nullable(num);
+// All the following are valid:
+nullableNumber(9);
+nullableNumber(null);
+```
+
 #### `oneOf`
 
 `(...(string | number | boolean)[]) -> IContract<union of valid values>`
@@ -239,8 +252,8 @@ Made from the [`typescript-library-starter`](https://github.com/alexjoverm/types
 Thanks goes to these wonderful people:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-| [<img src="https://avatars1.githubusercontent.com/u/1573956?v=4" width="100px;"/><br /><sub><b>Gonzalo Gluzman</b></sub>](https://github.com/dggluz)<br />[💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Code") [📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/2634059?v=4" width="100px;"/><br /><sub><b>Hernan Rajchert</b></sub>](https://github.com/hrajchert)<br />[📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=hrajchert "Documentation") [💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=hrajchert "Code") |
-| :---: | :---: |
+| [<img src="https://avatars1.githubusercontent.com/u/1573956?v=4" width="100px;"/><br /><sub><b>Gonzalo Gluzman</b></sub>](https://github.com/dggluz)<br />[💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Code") [📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/2634059?v=4" width="100px;"/><br /><sub><b>Hernan Rajchert</b></sub>](https://github.com/hrajchert)<br />[📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=hrajchert "Documentation") [💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=hrajchert "Code") | [<img src="https://avatars0.githubusercontent.com/u/4248944?v=4" width="100px;"/><br /><sub><b>Cristhian Duran</b></sub>](https://durancristhian.github.io/)<br />[💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Code") [📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Documentation") [💡](#example-durancristhian "Examples") [⚠️](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Tests") |
+| :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
