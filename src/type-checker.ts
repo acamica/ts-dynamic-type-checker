@@ -1,4 +1,6 @@
+export { dummy } from './dummy';
 export { undef } from './undef';
+export { nil } from './nil';
 export { bool } from './bool';
 export { num } from './num';
 export { str } from './str';
@@ -10,4 +12,5 @@ export { arrOf } from './arr-of';
 export { objOf } from './obj-of';
 export { strictObjOf } from './strict-obj-of';
 export { nullable } from './nullable';
+export { never } from './never';
 export { IContract } from './contract';

@@ -156,8 +156,44 @@ const fooBar = fooBarContract({
 | `num`     | `IContract<number>`               | `num(89); `            |
 | `str`     | `IContract<string>`               | `str('Hello world'); ` |
 | `undef`   | `IContract<undefined>`            | `undef(undefined); `   |
+| `nil`     | `IContract<null>`                 | `nil(null); `          |
 | `arr`     | `<T> IContract<T[]>`              | `arr([1, 2, 3]); `     |
 | `obj`     | `<T extends object> IContract<T>` | `bool({foo: 'foo'}); ` |
+| `dummy`   | `<T> IContract<T>`                | `dummy(4);`            |
+| `never`   | `IContract<never>`                | `never(4 as never);`   |
+
+#### A note on `dummy`
+
+`dummy` is just a _dummy identity function_ that will never throw a `TypeError`. Its static type will be inferred from the value if possible or will default to `any`. It's useful with another functions like `objOf` (view below). For instance you can define a contract like:
+
+```typescript
+const objHasFooContract = objOf({
+    foo: dummy
+});
+```
+
+#### A note on `never`
+
+You may think the `never` contract is useless. But it can be used to do an exhaustive check:
+
+```typescript
+const reactToSemaphore = (semaphoreLight: 'red' | 'yellow' | 'green') => {
+    switch (semaphoreLight) {
+        case 'red':
+            return 'stop';
+        case 'yellow':
+            return 'hurry';
+        case 'green':
+            return 'go';
+        default:
+            never(semaphoreLight);
+    }
+};
+```
+
+The function `reactToSemaphore` will fail in runtime if passed another value than `'red' | 'yellow' | 'green'`, but also with statically check that you aren't missing a `case` in the `switch` statement.
+
+You can read more about the use of `never` [here](https://basarat.gitbooks.io/typescript/docs/types/never.html).
 
 ### `contract` _builders_
 
@@ -243,7 +279,7 @@ It is the same than `objOf` function, but also checks that the _target_ doesn't 
 ```typescript
 // It only matches empty objects
 const emptyObjectContract = strictObjOf({});
-const oddy = emptyObjectContract({});
+const emptyObject = emptyObjectContract({});
 ```
 
 ## Credits
@@ -253,7 +289,7 @@ Made from the [`typescript-library-starter`](https://github.com/alexjoverm/types
 Thanks goes to these wonderful people:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-| [<img src="https://avatars1.githubusercontent.com/u/1573956?v=4" width="100px;"/><br /><sub>Gonzalo Gluzman</sub>](https://github.com/dggluz)<br />[💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Code") [📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/2634059?v=4" width="100px;"/><br /><sub>Hernan Rajchert</sub>](https://github.com/hrajchert)<br />[📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=hrajchert "Documentation") [💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=hrajchert "Code") | [<img src="https://avatars0.githubusercontent.com/u/4248944?v=4" width="100px;"/><br /><sub>Cristhian Duran</sub>](https://durancristhian.github.io/)<br />[💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Code") [📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Documentation") [💡](#example-durancristhian "Examples") [⚠️](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Tests") | [<img src="https://avatars0.githubusercontent.com/u/948922?v=4" width="100px;"/><br /><sub>Nicolás Quiroz</sub>](https://nicolasquiroz.com)<br />[📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=nhsz "Documentation") |
+| [<img src="https://avatars1.githubusercontent.com/u/1573956?v=4" width="100px;"/><br /><sub><b>Gonzalo Gluzman</b></sub>](https://github.com/dggluz)<br />[💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Code") [📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Documentation") [⚠️](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Tests") [💡](#example-dggluz "Examples") | [<img src="https://avatars0.githubusercontent.com/u/2634059?v=4" width="100px;"/><br /><sub><b>Hernan Rajchert</b></sub>](https://github.com/hrajchert)<br />[📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=hrajchert "Documentation") [💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=hrajchert "Code") | [<img src="https://avatars0.githubusercontent.com/u/4248944?v=4" width="100px;"/><br /><sub><b>Cristhian Duran</b></sub>](https://durancristhian.github.io/)<br />[💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Code") [📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Documentation") [💡](#example-durancristhian "Examples") [⚠️](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Tests") | [<img src="https://avatars0.githubusercontent.com/u/948922?v=4" width="100px;"/><br /><sub><b>Nicolás Quiroz</b></sub>](https://nicolasquiroz.com)<br />[📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=nhsz "Documentation") |
 | :---: | :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
