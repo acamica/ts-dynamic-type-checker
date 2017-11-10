@@ -1,11 +1,12 @@
-# TS dynamic type checker
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
+# TS Dynamic Type Checker
 
-**TypeScript library that permorms dynamic type checking.**
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
+
+> TypeScript library that performs dynamic type checking
 
 TypeScript is great. It warns you of static type errors and hence earns you lots of time and headaches. But your program probably have entrypoints (network requests, file readings, etc.) that can not be trusted completely.
 
-For instance, supose you read some configuration from a JSON file:
+For instance, supose you read some configuration from a `JSON` file:
 
 ```typescript
 import { readFile } from 'fs';
@@ -23,14 +24,14 @@ readFile('./my-aws-config.json', { encoding: 'utf8' }, (err, awsConfigStr) => {
 });
 ```
 
-In this example, TypeScript can not prevent errors if the read JSON doesn't have an expected property. These are the cases, this library was created for.
+In this example, TypeScript can not prevent errors if the read JSON doesn't have an expected property. These are some cases this library was created for.
 
 ## Features
 
-- Inferes typings.
+- Infers typings.
 - Very lightweight (under 4kb without minifying).
 - Expressive errors.
-- Works clientside and serverside.
+- Works both client and server-side.
 
 ## Installation
 
@@ -40,7 +41,7 @@ npm install --save ts-dynamic-type-checker
 
 ## Usage
 
-The basic concept behind the library is the one of "**_contract_**". A **_contract_** is an _identity function_ but it throws a `TypeError` if the parameter doesn't have the expected type.
+The main concept behind the library is "**_contracts_**". A **_contract_** is an _identity function_ that throws a `TypeError` if the parameter doesn't have the expected type.
 
 For example if you pass a `string` to the `str` **contract**, it will return the same value, for other _types_ it will throw a `TypeError`:
 
@@ -51,7 +52,7 @@ str('Hello world'); // <- Returns 'Hello world'
 str(8 as any); // <- Throws a TypeError
 ```
 
-Check for specific values:
+### Check for specific values
 
 ```typescript
 import { oneOf } from 'ts-dynamic-type-checker';
@@ -65,7 +66,7 @@ const readLine = createInterface({
   output: process.stdout
 });
 
-const aFruit: IFruit = 'cheese'; // <-- static error. It will be warned by TypeScript itself.
+const aFruit: IFruit = 'cheese'; // <- static error. It will be warned by TypeScript itself.
 
 readLine.question('Which is your favourite fruit?', (someFruit) => {
     const favouriteFruit: IFruit = isFruit(someFruit); // <- Will throw a TypeError if `someFruit` has any other value than 'apple', 'banana', 'strawberry' or 'orange'. It's a potential dynamic error and TypeScript could not detect it.
@@ -147,9 +148,9 @@ const fooBar = fooBarContract({
 
 ## API
 
-### Built-in `contract`s
+### Built-in `contracts`
 
-| Function  | Type                              | Example                | 
+| Function  | Type                              | Example                |
 | --------- | --------------------------------- | ---------------------- |
 | `bool`    | `IContract<boolean>`              | `bool(true); `         |
 | `num`     | `IContract<number>`               | `num(89); `            |
@@ -182,7 +183,7 @@ Takes a `contract` and returns a new one that matches like the first one but als
 
 ```typescript
 const nullableNumber = nullable(num);
-// All the following are valid:
+// The following are valid
 nullableNumber(9);
 nullableNumber(null);
 ```
@@ -252,8 +253,8 @@ Made from the [`typescript-library-starter`](https://github.com/alexjoverm/types
 Thanks goes to these wonderful people:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-| [<img src="https://avatars1.githubusercontent.com/u/1573956?v=4" width="100px;"/><br /><sub>Gonzalo Gluzman</sub>](https://github.com/dggluz)<br />[💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Code") [📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/2634059?v=4" width="100px;"/><br /><sub>Hernan Rajchert</sub>](https://github.com/hrajchert)<br />[📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=hrajchert "Documentation") [💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=hrajchert "Code") | [<img src="https://avatars0.githubusercontent.com/u/4248944?v=4" width="100px;"/><br /><sub>Cristhian Duran</sub>](https://durancristhian.github.io/)<br />[💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Code") [📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Documentation") [💡](#example-durancristhian "Examples") [⚠️](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Tests") | [<img src="https://avatars0.githubusercontent.com/u/948922?v=4" width="100px;"/><br /><sub>Nicolás Quiroz</sub>](https://nicolasquiroz.com)<br />[📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=nhsz "Documentation") |
-| :---: | :---: | :---: | :---: |
+| [<img src="https://avatars1.githubusercontent.com/u/1573956?v=4" width="100px;"/><br /><sub><b>Gonzalo Gluzman</b></sub>](https://github.com/dggluz)<br />[💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Code") [📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=dggluz "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/2634059?v=4" width="100px;"/><br /><sub><b>Hernan Rajchert</b></sub>](https://github.com/hrajchert)<br />[📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=hrajchert "Documentation") [💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=hrajchert "Code") | [<img src="https://avatars0.githubusercontent.com/u/4248944?v=4" width="100px;"/><br /><sub><b>Cristhian Duran</b></sub>](https://durancristhian.github.io/)<br />[💻](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Code") [📖](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Documentation") [💡](#example-durancristhian "Examples") [⚠️](https://github.com/acamica/ts-dynamic-type-checker/commits?author=durancristhian "Tests") |
+| :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
