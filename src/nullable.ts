@@ -1,9 +1,5 @@
 import { IContract } from './contract';
+import { union } from './union';
+import { nil } from './nil';
 
-export const nullable = <T> (contract: IContract<T>): IContract<T | null> =>
-(target: T | null) => {
-    if (target === null) {
-        return null;
-    }
-    return contract(target);
-};
+export const nullable = <T> (contract: IContract<T>) => union(contract, nil);

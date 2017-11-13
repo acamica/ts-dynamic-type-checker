@@ -1,10 +1,6 @@
 import { IContract } from './contract';
+import { union } from './union';
+import { undef } from './undef';
 
-export const optional = <T> (contract: IContract<T>): IContract<T | undefined> =>
-(target?: T) => {
-    if (typeof target === 'undefined') {
-        return undefined;            
-    }
-    return contract(target);
-};
-
+export const optional = <T> (contract: IContract<T>): (x?: T) => T | undefined =>
+    union(contract, undef);

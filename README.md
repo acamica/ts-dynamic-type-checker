@@ -239,6 +239,20 @@ const os = osContract('Linux'); // os's type is 'Linux' | 'Mac OS' | 'Windows' |
 
 TypeScript will infere the `contract`'s return value as the union of the literal types passed (up to 10 parameters, then behaves like `<T extends string | number | boolean> IContract<T>`).
 
+#### `union`
+
+`...(IContract) _> IContract<union of valid values>`
+
+It takes _contracts_ as arguments and returns a new _contract_ that matches if any of the them matches.
+
+```typescript
+const numOrStr = union(num, str);
+numOrStr(9);
+numOrStr('nine');
+```
+
+TypeScript will infere the `contract`'s return value as the union of the return values of the _contracts_ passed (up to 10 parameters, then behaves like `IContract<any>`).
+
 #### `arrOf`
 
 `<T> (IContract<T>) -> IContract<T[]>`

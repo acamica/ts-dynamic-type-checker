@@ -6,6 +6,7 @@ export { num } from './num';
 export { str } from './str';
 export { arr } from './arr';
 export { obj } from './obj';
+export { union } from './union';
 export { optional } from './optional';
 export { oneOf } from './one-of';
 export { arrOf } from './arr-of';
