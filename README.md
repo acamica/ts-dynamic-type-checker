@@ -159,6 +159,8 @@ const fooBar = fooBarContract({
 | `nil`     | `IContract<null>`                 | `nil(null); `          |
 | `arr`     | `<T> IContract<T[]>`              | `arr([1, 2, 3]); `     |
 | `obj`     | `<T extends object> IContract<T>` | `bool({foo: 'foo'}); ` |
+| `regExp`  | `IContract<RegExp>`               | `regExp(/^hello/i); `  |
+| `date`    | `IContract<Date>`                 | `date(new Date()); `   |
 | `dummy`   | `<T> IContract<T>`                | `dummy(4);`            |
 | `never`   | `IContract<never>`                | `never(4 as never);`   |
 
@@ -281,6 +283,21 @@ It is the same than `objOf` function, but also checks that the _target_ doesn't 
 const emptyObjectContract = strictObjOf({});
 const emptyObject = emptyObjectContract({});
 ```
+
+#### `instanceOf`
+
+`<C> (constructor: C) -> IContract<I>`
+<small>(`I` is instance of `C`)</small>
+
+It takes a _class_ or a or a _constructor function_ and returns a `contract` of instances of that _class_ or _constructor_.
+
+```typescript
+class Foo {}
+
+const instanceOfFooContract = instanceOf(Foo);
+const foo = instanceOfFooContract(new Foo());
+```
+
 
 ## Credits
 

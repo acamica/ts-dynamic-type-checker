@@ -13,4 +13,7 @@ export { objOf } from './obj-of';
 export { strictObjOf } from './strict-obj-of';
 export { nullable } from './nullable';
 export { never } from './never';
+export { regExp } from './reg-exp';
+export { date } from './date';
+export { instanceOf } from './instance-of';
 export { IContract } from './contract';
