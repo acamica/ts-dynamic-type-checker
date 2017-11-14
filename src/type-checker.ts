@@ -1,4 +1,4 @@
-export { dummy } from './dummy';
+export { anything } from './anything';
 export { undef } from './undef';
 export { nil } from './nil';
 export { bool } from './bool';
@@ -18,3 +18,6 @@ export { regExp } from './reg-exp';
 export { date } from './date';
 export { instanceOf } from './instance-of';
 export { IContract } from './contract';
+
+// TODO: deprecate "dummy" in a future version
+export { anything as dummy } from './anything';
