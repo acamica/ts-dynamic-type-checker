@@ -174,8 +174,6 @@ const objHasFooContract = objOf({
 });
 ```
 
-**DEPRECATION NOTE**: `anything` was previously named `dummy`. `dummy`still exists as an alias for `anything` but will be deprecated in the future.
-
 #### A note on `never`
 
 You may think the `never` contract is useless. But it can be used to do an exhaustive check:
