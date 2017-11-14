@@ -150,29 +150,35 @@ const fooBar = fooBarContract({
 
 ### Built-in `contracts`
 
-| Function  | Type                              | Example                |
-| --------- | --------------------------------- | ---------------------- |
-| `bool`    | `IContract<boolean>`              | `bool(true); `         |
-| `num`     | `IContract<number>`               | `num(89); `            |
-| `str`     | `IContract<string>`               | `str('Hello world'); ` |
-| `undef`   | `IContract<undefined>`            | `undef(undefined); `   |
-| `nil`     | `IContract<null>`                 | `nil(null); `          |
-| `arr`     | `<T> IContract<T[]>`              | `arr([1, 2, 3]); `     |
-| `obj`     | `<T extends object> IContract<T>` | `bool({foo: 'foo'}); ` |
-| `regExp`  | `IContract<RegExp>`               | `regExp(/^hello/i); `  |
-| `date`    | `IContract<Date>`                 | `date(new Date()); `   |
-| `dummy`   | `<T> IContract<T>`                | `dummy(4);`            |
-| `never`   | `IContract<never>`                | `never(4 as never);`   |
+| Function  | Type                                   | Example                          |
+| --------- | -------------------------------------- | -------------------------------- |
+| `bool`    | `IContract<boolean>`                   | `bool(true); `                   |
+| `num`     | `IContract<number>`                    | `num(89); `                      |
+| `str`     | `IContract<string>`                    | `str('Hello world'); `           |
+| `undef`   | `IContract<undefined>`                 | `undef(undefined); `             |
+| `nil`     | `IContract<null>`                      | `nil(null); `                    |
+| `arr`     | `<T> IContract<T[]>`                   | `arr([1, 2, 3]); `               |
+| `obj`     | `<T extends object> IContract<T>`      | `bool({foo: 'foo'}); `           |
+| `regExp`  | `IContract<RegExp>`                    | `regExp(/^hello/i); `            |
+| `date`    | `IContract<Date>`                      | `date(new Date()); `             |
+| `anything`| `<T> IContract<T>`                     | `anything(4);`                   |
+| `never`   | `IContract<never>`                     | `never(4 as never);`             |
 
-#### A note on `dummy`
+#### `dummy`
 
-`dummy` is just a _dummy identity function_ that will never throw a `TypeError`. Its static type will be inferred from the value if possible or will default to `any`. It's useful with another functions like `objOf` (view below). For instance you can define a contract like:
+`dummy`is an _alias_ of `anything`, but will be deprecated in the future.
+
+#### A note on `anything`
+
+`anything` is just an _identity function_ that will never throw a `TypeError`. Its static type will be inferred from the value if possible or will default to `any`. It's useful with another functions like `objOf` (view below). For instance you can define a contract like:
 
 ```typescript
 const objHasFooContract = objOf({
-    foo: dummy
+    foo: anything
 });
 ```
+
+**DEPRECATION NOTE**: `anything` was previously named `dummy`. `dummy`still exists as an alias for `anything` but will be deprecated in the future.
 
 #### A note on `never`
 
