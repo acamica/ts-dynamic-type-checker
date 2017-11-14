@@ -18,6 +18,3 @@ export { regExp } from './reg-exp';
 export { date } from './date';
 export { instanceOf } from './instance-of';
 export { IContract } from './contract';
-
-// TODO: deprecate "dummy" in a future version
-export { anything as dummy } from './anything';

@@ -164,10 +164,6 @@ const fooBar = fooBarContract({
 | `anything`| `<T> IContract<T>`                     | `anything(4);`                   |
 | `never`   | `IContract<never>`                     | `never(4 as never);`             |
 
-#### `dummy`
-
-`dummy`is an _alias_ of `anything`, but will be deprecated in the future.
-
 #### A note on `anything`
 
 `anything` is just an _identity function_ that will never throw a `TypeError`. Its static type will be inferred from the value if possible or will default to `any`. It's useful with another functions like `objOf` (view below). For instance you can define a contract like:
