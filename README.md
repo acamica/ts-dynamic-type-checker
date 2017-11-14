@@ -162,7 +162,7 @@ const fooBar = fooBarContract({
 | `regExp`  | `IContract<RegExp>`                    | `regExp(/^hello/i); `            |
 | `date`    | `IContract<Date>`                      | `date(new Date()); `             |
 | `anything`| `<T> IContract<T>`                     | `anything(4);`                   |
-| `dummy`   | Alias of `anything` (will be deprecated in the future)                   ||
+| `dummy`   | Alias of `anything` (will be deprecated in the future)                    |
 | `never`   | `IContract<never>`                     | `never(4 as never);`             |
 
 #### A note on `anything`
