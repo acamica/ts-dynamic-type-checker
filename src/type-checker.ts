@@ -18,3 +18,4 @@ export { regExp } from './reg-exp';
 export { date } from './date';
 export { instanceOf } from './instance-of';
 export { IContract } from './contract';
+export {index} from "./index";
