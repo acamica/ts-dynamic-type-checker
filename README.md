@@ -158,11 +158,12 @@ const fooBar = fooBarContract({
 | `undef`   | `IContract<undefined>`                 | `undef(undefined); `             |
 | `nil`     | `IContract<null>`                      | `nil(null); `                    |
 | `arr`     | `<T> IContract<T[]>`                   | `arr([1, 2, 3]); `               |
-| `obj`     | `<T extends object> IContract<T>`      | `bool({foo: 'foo'}); `           |
+| `obj`     | `<T extends object> IContract<T>`      | `obj({foo: 'foo'}); `           |
 | `regExp`  | `IContract<RegExp>`                    | `regExp(/^hello/i); `            |
 | `date`    | `IContract<Date>`                      | `date(new Date()); `             |
 | `anything`| `<T> IContract<T>`                     | `anything(4);`                   |
 | `never`   | `IContract<never>`                     | `never(4 as never);`             |
+| `index`   | `IContract<{[key : string] : any}>`    | `index({foo: 'foo'}); `             |
 
 #### A note on `anything`
 
@@ -310,6 +311,20 @@ class Foo {}
 
 const instanceOfFooContract = instanceOf(Foo);
 const foo = instanceOfFooContract(new Foo());
+```
+
+#### `indexOf`
+
+`<T> IContract<T> -> IContract<{[key : string] : T}>`
+
+Takes a `contract` and returns a `contract` that matches _indexes_ where all the values match the first `contract`. Note that _string_ _indexes_ and _number_ _indexes_ are the same at runtime.
+
+```typescript
+const booleanIndexContract = indexOf(bool);
+const foo = booleanIndexContract({
+    a: true,
+    b: false
+});
 ```
 
 
